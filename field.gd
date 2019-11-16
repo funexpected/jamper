@@ -96,7 +96,9 @@ func push(obj):
 		
 
 func block_is_good(obj):
-	var column = obj.position.x / size_block
+	var tmp_obj_pos_x = obj.position.x + 1080/2
+#	var column = obj.position.x / size_block
+	var column = tmp_obj_pos_x / size_block 
 	var cell = check_table(column)
 	var cell_image = check_image_table(column)
 	print("TWO_TABLES")

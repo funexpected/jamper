@@ -34,6 +34,11 @@ color = Color( 1, 1, 1, 0.313726 )
 [node name="grandma" parent="." instance=ExtResource( 2 )]
 
 [node name="field" parent="." instance=ExtResource( 3 )]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_top = -1920.0
+margin_bottom = -1920.0
 
 [node name="spawner0" parent="." instance=ExtResource( 4 )]
 position = Vector2( -525, -345 )
