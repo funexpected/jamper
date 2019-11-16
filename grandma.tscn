@@ -1,3 +1,9 @@
 [gd_scene format=2]
 
 [node name="grandma" type="Node2D"]
+
+[node name="back" type="ColorRect" parent="."]
+grow_horizontal = 2
+grow_vertical = 0
+rect_min_size = Vector2( 150, 150 )
+color = Color( 0.290196, 0.341176, 0.764706, 1 )
