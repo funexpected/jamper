@@ -19,6 +19,11 @@ config/name="jamper"
 run/main_scene="res://menu.tscn"
 config/icon="res://jamper.png"
 
+[autoload]
+
+Time="*res://tw_time/time.gd"
+tw="*res://tw_time/tw.gd"
+
 [display]
 
 window/size/width=1080
