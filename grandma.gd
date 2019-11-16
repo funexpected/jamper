@@ -13,10 +13,10 @@ var is_busy = false
 
 onready var obj = $back
 onready var sprite = $sprite
-func jump(prepare = true):
+func jump(time, prepare = true):
 	if !is_busy:
 		is_busy = true
 #		sprite.play("jump")
-		yield(tw.ip(obj, "rect_position:y", obj.rect_position.y, obj.rect_position.y - 150, 0.3), "tween_completed")
-		yield(tw.ip(obj, "rect_position:y", obj.rect_position.y, obj.rect_position.y + 150, 0.3), "tween_completed")
+		yield(tw.ip(obj, "rect_position:y", obj.rect_position.y, obj.rect_position.y - 150, time), "tween_completed")
+		yield(tw.ip(obj, "rect_position:y", obj.rect_position.y, obj.rect_position.y + 150, time), "tween_completed")
 		is_busy = false
