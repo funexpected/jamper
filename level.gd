@@ -19,6 +19,8 @@ func _process(delta):
 	time += delta
 	if tick*DT < time: # need to update
 		tick += 1
+		if (tick%8 == 0):
+			$spawner0.start_next_bullet()
 		var bmb = ((tick)%28)*0.5-7
 		if bmb == 14:
 			$bullet.rect_position.x = -150*DT*(bmb-1)*4
