@@ -37,20 +37,23 @@ color = Color( 1, 1, 1, 0.313726 )
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.0
-margin_top = -1920.0
-margin_bottom = -1920.0
+margin_top = -1800.0
+margin_bottom = -1800.0
 
 [node name="spawner0" parent="." instance=ExtResource( 4 )]
-position = Vector2( -525, -345 )
+position = Vector2( -525, -75 )
+bps = 3
 
 [node name="spawner1" parent="." instance=ExtResource( 4 )]
-position = Vector2( -525, -495 )
+position = Vector2( -525, -225 )
 
 [node name="spawner2" parent="." instance=ExtResource( 4 )]
-position = Vector2( 525, -495 )
+position = Vector2( 525, -225 )
+bps = 4
 
 [node name="spawner3" parent="." instance=ExtResource( 4 )]
-position = Vector2( 525, -345 )
+position = Vector2( 525, -75 )
+bps = 2
 
 [node name="bullet" type="ColorRect" parent="."]
 margin_left = -825.0
