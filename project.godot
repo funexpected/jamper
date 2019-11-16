@@ -39,6 +39,10 @@ window/stretch/aspect="expand"
 theme/use_hidpi=true
 common/snap_controls_to_pixels=false
 
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
