@@ -26,11 +26,12 @@ func _process(delta):
 			tmp = tick
 		var bullet_pos_tick = (tick-tmp)*0.5 - 4
 		grandma.get_node("back/text").text = str(bullet_pos_tick)
-		if bullet_pos_tick < -1.0-1.0:
+
+		if bullet_pos_tick < -1.0+2.0:
 			grandma.get_node("back").color = Color("4a57c3")
-		elif bullet_pos_tick < -0.5-1.0:
+		elif bullet_pos_tick < -0.5+2.0:
 			grandma.get_node("back").color = Color("1dd091")
-		elif bullet_pos_tick < 2.0-1.0:
+		elif bullet_pos_tick < 2.0+2.0:
 			grandma.get_node("back").color = Color("b323bb")
 		else:
 			grandma.get_node("back").color = Color("4a57c3")

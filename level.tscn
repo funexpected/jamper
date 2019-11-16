@@ -42,18 +42,15 @@ margin_bottom = -1800.0
 
 [node name="spawner0" parent="." instance=ExtResource( 4 )]
 position = Vector2( -525, -75 )
-bps = 3
 
 [node name="spawner1" parent="." instance=ExtResource( 4 )]
 position = Vector2( -525, -225 )
 
 [node name="spawner2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 525, -225 )
-bps = 4
 
 [node name="spawner3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 525, -75 )
-bps = 2
 
 [node name="bullet" type="ColorRect" parent="."]
 margin_left = -825.0
