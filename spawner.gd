@@ -3,10 +3,15 @@ extends Node2D
 var SQUARE_TSCN = preload("res://square.tscn")
 
 export var queue_color:PoolColorArray setget set_queue_color
+export var MESH_SIZE = 7
+export var SEGMENT_SIZE = 150
+export var bps = 1
+
 
 var COMPLETED = "completed"
 
 signal spawn_tick
+
 
 var queue = 0
 
@@ -17,14 +22,11 @@ func _ready():
 
 
 var time = 0
-
 func _process(delta):
 	time += delta
-	if (time >= 1):
+	if time >= bps:
 		time = 0
-		start_next_bullet(1)
-	del_exit_bullets()
-
+		start_next_bullet(3.2)
 
 
 func set_queue_color(color_arr:PoolColorArray):
@@ -40,21 +42,22 @@ func start_next_bullet(speed:float):
 	if queue_color:
 		a.color = queue_color[queue]
 		queue = queue + 1 if queue < queue_color.size() - 1 else 0
-	if position.x >= 1080:
-		a.position.x += 150
-		tw.ip(a, "position:x", a.position.x, -(1080 + 151), speed)
-	elif position.x <= 0:
-		a.position.x -= 150
-		tw.ip(a, "position:x", a.position.x, 1080 + 151, speed)
+	
+	var tween_speed = (MESH_SIZE + 1) / speed
+	
+	if position.x > 0:
+		a.position.x += SEGMENT_SIZE * 0.5 
+		yield(tw.ip(a, "position:x", a.position.x, a.position.x - (MESH_SIZE + 1) * SEGMENT_SIZE, tween_speed),
+			"tween_completed")
+		a.queue_free()
+	elif position.x < 0:
+		a.position.x -= SEGMENT_SIZE * 0.5
+		yield(tw.ip(a, "position:x", a.position.x, a.position.x + (MESH_SIZE + 1) * SEGMENT_SIZE, tween_speed),
+			"tween_completed")
+		a.queue_free()
 
 
 
-
-func del_exit_bullets():
-	var bullets = get_children()
-	for i in bullets:
-		if i.position.x >= 1080 + 151 || i.position.x <= -(1080 + 151):
-			i.queue_free()
 
 
 
