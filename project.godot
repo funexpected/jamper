@@ -19,20 +19,17 @@ config/name="jamper"
 run/main_scene="res://menu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Time="*res://tw_time_script/time.gd"
+tw="*res://tw_time_script/tw.gd"
+
 [display]
 
 window/size/width=1080
 window/size/height=1920
 window/size/test_width=540
 window/size/test_height=960
-window/dpi/allow_hidpi=true
-window/stretch/mode="2d"
-window/stretch/aspect="expand"
-
-[gui]
-
-theme/use_hidpi=true
-common/snap_controls_to_pixels=false
 
 [rendering]
 
