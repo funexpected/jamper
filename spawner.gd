@@ -5,24 +5,27 @@ var SQUARE_TSCN = preload("res://square.tscn")
 export var queue_color:PoolColorArray setget set_queue_color
 export var MESH_SIZE = 7
 export var SEGMENT_SIZE = 150
-export var bps = 1
 export var default_speed = 3.2
 
 
+
 var COMPLETED = "completed"
-
-signal spawn_tick
-
-
 var queue = 0
+var emit_poligon
+
+
+
+
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	emit_poligon = $emit_polygon
 	pass
 
 
 #var time = 0
+#var bps = 1.5
 #func _process(delta):
 #	time += delta
 #	if time >= bps:
@@ -44,18 +47,35 @@ func start_next_bullet(speed = default_speed):
 		a.color = queue_color[queue]
 		queue = queue + 1 if queue < queue_color.size() - 1 else 0
 	
-	var tween_speed = (MESH_SIZE + 1) / speed
+	var tween_speed = (MESH_SIZE + 4) / speed
 	
 	if position.x > 0:
-		a.position.x += SEGMENT_SIZE * 0.5 
-		yield(tw.ip(a, "position:x", a.position.x, a.position.x - (MESH_SIZE + 1) * SEGMENT_SIZE, tween_speed),
+		emit_color_bulet(speed, a.color)
+		a.position.x += SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
+		yield(tw.ip(a, "position:x", a.position.x, a.position.x - (MESH_SIZE + 4) * SEGMENT_SIZE, tween_speed),
 			"tween_completed")
-		a.queue_free()
 	elif position.x < 0:
-		a.position.x -= SEGMENT_SIZE * 0.5
-		yield(tw.ip(a, "position:x", a.position.x, a.position.x + (MESH_SIZE + 1) * SEGMENT_SIZE, tween_speed),
+		emit_color_bulet(speed, a.color)
+		a.position.x -= SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
+		yield(tw.ip(a, "position:x", a.position.x, a.position.x + (MESH_SIZE + 4) * SEGMENT_SIZE, tween_speed),
 			"tween_completed")
-		a.queue_free()
+	a.queue_free()
+
+
+func emit_color_bulet(speed, color):
+	emit_poligon.color = color
+	emit_poligon.color.a = 0.3
+	yield(Time.wait(0.7 / speed), COMPLETED)
+	emit_poligon.color.a = 0
+	yield(Time.wait(0.5 / speed), COMPLETED)
+	emit_poligon.color.a = 0.6
+	yield(Time.wait(0.7 / speed), COMPLETED)
+	emit_poligon.color = ("00000000")
+	
+
+
+
+
 
 
 
