@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="jamper"
 run/main_scene="res://menu.tscn"
-config/icon="res://icon.png"
+config/icon="res://jamper.png"
 
 [display]
 
