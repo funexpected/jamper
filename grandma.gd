@@ -27,7 +27,12 @@ func _jump(time, prepare = true):
 		yield(tw.ip(obj, "rect_position:y", obj.rect_position.y, obj.rect_position.y + 150, time), "tween_completed")
 		is_busy = false
 		
+var jumping = false
 func jump(t):
+	if jumping:
+		yield(Time.defer(), "completed")
+		return
+	jumping = true
 	Time.wait(t*0.5).connect("completed", get_tree(), "set_pause", [true])
 	Time.wait(t*1.5).connect("completed", get_tree(), "set_pause", [false])
 	yield(tw\
@@ -40,4 +45,5 @@ func jump(t):
 		.ip(sprite, "scale", Vector2(1.1, 0.9), Vector2(1,1), t*0.1, tw.SINE, tw.INOUT, t*0.9)\
 		.ip(sprite, "position:y", sprite.position.y, sprite.position.y - 150, t*0.3, tw.CUBIC, tw.OUT, t*0.2)\
 		.ip(sprite, "position:y", sprite.position.y - 150, sprite.position.y, t*0.3, tw.CUBIC, tw.IN, t*0.5),
-	"tween_completed")
+	"completed")
+	jumping = false
