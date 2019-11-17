@@ -4,8 +4,11 @@ extends Node2D
 const SIZE = Vector2(-150, -150)
 
 export var color = Color(1,1,1)
+export var active = true
 
 var pos = Vector2(0,0) setget ,get_pos
+
+var direction:Vector2
 
 func get_pos():
 	pass
