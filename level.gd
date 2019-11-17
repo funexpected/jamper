@@ -45,6 +45,8 @@ func on_tick(tick):
 				grandma.push(1)
 				
 		
+	if !tick % 14:
+		print(get_active_squares(), "\n\n\n")
 	if is_need_to_jump:
 		is_need_to_jump = false
 		grandma.jump()
@@ -57,7 +59,8 @@ func push_block():
 func walk_around_spawners():
 	var active = get_active_squares()
 	for sq in active:
-		if sq.position == grandma.position:
+		if sq.position.x == grandma.position.x && sq.position.y == grandma.position - 150:
+			print("Touch")
 			field.push(sq)
 
 
