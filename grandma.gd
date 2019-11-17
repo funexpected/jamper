@@ -1,8 +1,9 @@
 extends Node2D
+class_name GrandMa
 
-const MOVE_LEFT = -1
-const MOVE_NONE = 0
-const MOVE_RIGHT = 1
+const LEFT = -1
+const NONE = 0
+const RIGHT = 1
 
 export var texture = Color("4a57c3") setget set_texture
 onready var obj = $back
@@ -40,7 +41,7 @@ func jump(t):
 		yield(Time.defer(), "completed")
 		return
 	jumping = true
-	pause_on_jump()
+	pause_in(2)
 	yield(tw\
 		.ip(sprite, "scale", Vector2(1,1), Vector2(1.1, 0.9), t*0.1)\
 		.ip(sprite, "scale", Vector2(1.1, 0.9), Vector2(0.8, 1.2), t*0.1, tw.SINE, tw.INOUT, t*0.1)\
@@ -54,9 +55,15 @@ func jump(t):
 	"completed")
 	jumping = false
 	
-func pause_on_jump():
-	yield(Time, "tick")
-	yield(Time, "tick")
+func push(dir):
+	pass
+	
+func jump_and_slide(dir):
+	pass
+	
+func pause_in(ticks):
+	for i in range(ticks):
+		yield(Time, "tick")
 	get_tree().paused = true
 	yield(Time.wait(1), "completed")
 	get_tree().paused = false

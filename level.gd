@@ -4,7 +4,7 @@ onready var grandma = $grandma
 
 var is_need_to_jump = false
 const DEBUG = false
-const GRID = false
+const GRID = true
 const CELL = Vector2(150, 150)
 
 func _input(e):
@@ -23,6 +23,9 @@ func on_tick(tick):
 	if is_need_to_jump:
 		is_need_to_jump = false
 		grandma.jump(Time.TICK*4)
+		
+func get_active_squares():
+	pass
 
 
 func _draw():
