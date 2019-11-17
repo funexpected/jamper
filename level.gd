@@ -25,10 +25,8 @@ func on_tick(tick):
 	
 	if is_need_to_jump:
 		is_need_to_jump = false
-		grandma.jump(Time.TICK*4)
-		
-func get_active_squares():
-	pass
+		grandma.jump()
+		#grandma.jump_and_slide(GrandMa.RIGHT)
 
 
 func get_active_squares():
