@@ -4,7 +4,7 @@ class_name GrandMa
 const LEFT = -1
 const NONE = 0
 const RIGHT = 1
-const ANIM_TIME = {"idle": 1.0, "jump": 4.0, "jump_slide": 2.0, "slide": 1.0, "push": 1.0, "kick": 1.0}
+const ANIM_TIME = {"idle": 1.0, "jump": 4.0, "jump_slide": 2.0, "slide": 1.0, "push": 1.0, "kick": 1.0, "fall": 1.0}
 const CELL = Vector2(150, 150)
 
 export var texture = Color("4a57c3") setget set_texture
@@ -20,7 +20,7 @@ func _ready():
 	Time.connect("tick", self, "on_tick")
 
 func on_tick(tick):
-#	grid_pos = Vector2(int(position.x / 150.0), -int(position.y / 150.0))
+	grid_pos = Vector2(int(position.x / 150.0), -int(position.y / 150.0))
 	$text.text = str(grid_pos)
 
 
@@ -40,11 +40,25 @@ func move(value = moving):
 	moving = value
 	tw.ip(self, "position:x", position.x, (grid_pos.x+value/2.0)*CELL.x, Time.TICK)
 	grid_pos.x += value/2.0
-#	grid_pos.x += value/2.0
-#	yield(tw.ip(self, "position:x", position.x, (grid_pos.x+value/2.0)*CELL.x/2.0, Time.TICK), "completed")
-#func _process(delta):
-#	if moving:
-#		position += Vector2(moving, 0) * delta * 75 / Time.TICK
+
+func down():
+	jumping = true
+	grid_pos.y = 0
+	position.y = 0
+	var type = "fall"
+	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
+	sprite.play(type)
+#	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
+	yield(sprite, "animation_finished")
+	type = "idle"
+	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
+	sprite.play(type)
+#	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
+	yield(sprite, "animation_finished")
+	jumping = false
+
+func get_pos_after_x_tick(x):
+	return grid_pos+ Vector2(x*moving/2.0, 0)
 
 var jumping = false
 func jump():
@@ -55,53 +69,17 @@ func jump():
 	var type = "jump"
 	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
 	sprite.play(type)
-	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
+#	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
 	yield(sprite, "animation_finished")
 	type = "idle"
 	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
 	sprite.play(type)
 	moving = NONE
 	jumping = false
-	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
+#	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
 
 
-var _pushing = false
-var _dir
-func push(dir):
-	if _pushing:
-		return
-	_dir = dir
-	_pushing = true
-	var t = Time.TICK
-#	yield(tw\
-	if true:
-		tw.ip(sprite, "scale", Vector2(1,1), Vector2(0.9, 1.1), t*0.3)
-		tw.ip(sprite, "scale", sprite.scale, Vector2(1, 1), t*0.5, tw.SINE, tw.INOUT, t*0.3)
-		yield(tw.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
-	"completed")
-	self.position.x += 150 * dir
-	print (position.x)
-	sprite.position.x = 0
-	if position.x > 740:
-		self.position.x = -450
-		yield(Time.wait(0.2), "completed")
-	_pushing = false
-
-
-func push_and_drop(dir):
-	jumping = true
-	var t = Time.TICK * 2
-	if (t > 0):
-		yield(tw\
-		.ip(sprite, "scale", Vector2(1,1), Vector2(0.9, 1.1), t*0.3)\
-		.ip(sprite, "scale", sprite.scale, Vector2(1, 1), t*0.5, tw.SINE, tw.INOUT, t*0.3)\
-		.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
-	"completed")
-	jumping = false
-	pass
-
-
-func jump_and_slide(dir):
+func jump_and_slide(dir, force):
 	if jumping:
 		yield(Time.defer(), "completed")
 		return
@@ -109,24 +87,60 @@ func jump_and_slide(dir):
 	var type = "jump_slide"
 	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
 	sprite.play(type)
-	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
+#	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
 	yield(sprite, "animation_finished")
 	if type == "jump_slide":
 		grid_pos.y += 1
-		moving = dir
 		type = "slide"
 		sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
 		sprite.play(type)
-		print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
-		jumping = false
+#		print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
 		yield(sprite, "animation_finished")
+		moving = dir
 		position.y -= 150
 	type = "idle"
 	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
 	sprite.play(type)
-	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
+#	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
+	yield(sprite, "animation_finished")
+	jumping = false
 
-	
+#
+#var _pushing = false
+#var _dir
+#func push(dir):
+#	if _pushing:
+#		return
+#	_dir = dir
+#	_pushing = true
+#	var t = Time.TICK
+##	yield(tw\
+#	if true:
+#		tw.ip(sprite, "scale", Vector2(1,1), Vector2(0.9, 1.1), t*0.3)
+#		tw.ip(sprite, "scale", sprite.scale, Vector2(1, 1), t*0.5, tw.SINE, tw.INOUT, t*0.3)
+#		yield(tw.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
+#	"completed")
+#	self.position.x += 150 * dir
+##	print (position.x)
+#	sprite.position.x = 0
+#	if position.x > 740:
+#		self.position.x = -450
+#		yield(Time.wait(0.2), "completed")
+#	_pushing = false
+#
+#
+#func push_and_drop(dir):
+#	jumping = true
+#	var t = Time.TICK * 2
+#	if (t > 0):
+#		yield(tw\
+#		.ip(sprite, "scale", Vector2(1,1), Vector2(0.9, 1.1), t*0.3)\
+#		.ip(sprite, "scale", sprite.scale, Vector2(1, 1), t*0.5, tw.SINE, tw.INOUT, t*0.3)\
+#		.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
+#	"completed")
+#	jumping = false
+#	pass
+
 func pause_in(ticks):
 	for i in range(ticks):
 		yield(Time, "tick")

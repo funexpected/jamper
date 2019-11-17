@@ -44,22 +44,18 @@ margin_bottom = -1800.0
 
 [node name="spawner0" parent="." instance=ExtResource( 4 )]
 position = Vector2( -525, -75 )
-queue_color = PoolColorArray( 0.027451, 0.752941, 0.796078, 1, 0.878431, 0.960784, 1, 1, 0.027451, 0.752941, 0.796078, 1, 0.878431, 0.960784, 1, 1 )
-tick_color = PoolIntArray( 14, 14, 14, 14 )
+queue_color = PoolColorArray( 0.772549, 0.788235, 0.341176, 1 )
+tick_color = PoolIntArray( 14 )
+tick_offset = 3
 
 [node name="spawner1" parent="." instance=ExtResource( 4 )]
-visible = false
 position = Vector2( -525, -225 )
 
 [node name="spawner2" parent="." instance=ExtResource( 4 )]
-visible = false
 position = Vector2( 525, -225 )
-queue_color = PoolColorArray( 0.878431, 0.960784, 1, 1, 0.027451, 0.752941, 0.796078, 1, 0.027451, 0.752941, 0.796078, 1, 0.878431, 0.960784, 1, 1 )
-tick_color = PoolIntArray( 14, 14 )
-tick_offset = 2
+tick_offset = 15
 
 [node name="spawner3" parent="." instance=ExtResource( 4 )]
-visible = false
 position = Vector2( 525, -75 )
 
 [node name="debug_tick" type="Label" parent="."]

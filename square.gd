@@ -15,17 +15,29 @@ var tween
 
 var direction:Vector2
 var y_pos
+var start_tick = 0
+var start_pos = Vector2.ZERO
 
+
+#func get_pos():
+#	if direction.x > 0:
+#		pos =  Vector2((position.x / 75)/ 2.0 - 3, y_pos)
+#	else:
+#		pos =  Vector2((12 + position.x / 75)/ 2.0 - 3, y_pos)
+#	return pos
+
+func get_pos_after_x_tick(x):
+	return start_pos + Vector2(direction.x * (Time.tick - start_tick + x)*0.5, 0)
 
 func get_pos():
-	if direction.x > 0:
-		pos =  Vector2((position.x / 75)/ 2.0 - 3, y_pos)
-	else:
-		pos =  Vector2((12 + position.x / 75)/ 2.0 - 3, y_pos)
+	var pos = start_pos + Vector2(direction.x * (Time.tick - start_tick)*0.5, 0)
+#	print(pos)
+	update_pos_text(pos)
 	return pos
+	
 
-func update_pos_text():
-	$label.text = "%0.1f, %0.1f" % [get_pos().x, get_pos().y]
+func update_pos_text(pos):
+	$label.text = str(pos)
 
 func _draw():
 	draw_rect(Rect2(-SIZE*0.5, SIZE), color, true)

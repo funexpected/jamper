@@ -11,7 +11,6 @@ func _input(e):
 	if e is InputEventScreenTouch:
 		if e.pressed:
 			is_need_to_jump = true
-			test = Time.tick+1
 	elif e is InputEventKey:
 		if e.is_action_pressed("pause"):
 				get_tree().paused = true
@@ -19,72 +18,56 @@ func _input(e):
 				get_tree().paused = false
 		elif e.is_action_pressed("jump"):
 			is_need_to_jump = true
-			test = Time.tick+1
 
 func _ready():
 	Time.connect("tick", self, "on_tick")
 	if DEBUG:
 		$debug_tick.show()
 
-var test = 0
 func on_tick(tick):
-	$debug_tick.text = "%003.2f sec\n(%0004d tick) jump at %d"%[tick*Time.TICK, tick, test]#"(Will jump %d)"%(tick+1) if is_need_to_jump else ""]
+	$debug_tick.text = "%003.2f sec\n(%0004d tick)" % [tick*Time.TICK, tick]
 	if  grandma.moving != 0:
-		grandma.move()
-#	print(grandma.grid_pos)
-	#if (tick%14 == 1):
-	#	$spawner0.start_next_bullet(1/Time.TICK/2)
-#	if !tick % 14:
-#		print(get_active_squares(), "\n\n\n")
+		var p = grandma.get_pos_after_x_tick(1)
+		if grandma.moving != 0:
+			if p.x < 3.5 and p.x > -3.5: 
+				grandma.move()
+			elif p.y > 0:
+				grandma.down()
 	
-#	$grandma/text.text = str(grandma.get_player_position())
-#	var player_pos = grandma.get_player_position()
-#	if !is_need_to_jump and !grandma._pushing and !grandma.jumping:
-#		var _want_push
-#		var to_many_to_push = false
-#		for square in get_active_squares():
-#			var s_pos = square.get_pos()
-#			if abs(s_pos.y - player_pos.y) > 0.01:
-#				 continue
-#			if abs(s_pos.x - player_pos.x) < 0.5:
-#				if _want_push:
-#					to_many_to_push = true
-#					break
-#				_want_push = square
-#		if _want_push && !to_many_to_push:
-#			_want_push.color = Color()
-#			print(_want_push.get_pos())
-#			if _want_push.get_pos().x - player_pos.x > 0:
-#				grandma.push(-1)
-#			else:
-#				grandma.push(1)
 	var squares = get_active_squares()
 	for sq in squares:
 		sq.get_pos()
-		sq.update_pos_text()
-#		if tick%14:
-		print(sq)
 	if is_need_to_jump:
 		is_need_to_jump = false
-		grandma.jump()
-		
-		push_block()
-#		grandma.jump_and_slide(GrandMa.RIGHT)
+		var jump_slide = null
+		for sq in squares:
+			if sq.y_pos != 0:
+				continue
+			print(GrandMa.ANIM_TIME.jump+GrandMa.ANIM_TIME.slide)
+			if jump_slide == null and sq.get_pos_after_x_tick(GrandMa.ANIM_TIME.jump_slide) == grandma.grid_pos:
+				jump_slide = {"dir": sq.direction, "force": false}
+		if jump_slide:
+			grandma.jump_and_slide(jump_slide.dir.x, jump_slide.force)
+		else:
+			grandma.jump()
+			push_block()
 
 func push_block():
-	walk_around_spawners()
-
-func walk_around_spawners():
+	var baba_pos = grandma.grid_pos
 	var active = get_active_squares()
 	for sq in active:
-		if !sq.active:
+		if !sq.active or sq.get_pos().y <= baba_pos.y:
 			continue
-		var baba = grandma.get_player_position()
-		var block = sq.get_pos()
-		if int(baba.y) != int(block.y): # and int(baba.x) == int(block.x):
-			yield(prepare_jump(sq), "completed")
-			print("Touch")
-			field.push(sq)
+		var pos_1 = sq.get_pos_after_x_tick(0)
+		var pos_2 = sq.get_pos_after_x_tick(1)
+		if baba_pos.x == pos_1.x:
+			field.push(sq, true)
+		elif baba_pos.x == pos_2.x:
+			field.push(sq, false)
+		
+#		if int(baba.y) != int(block.y): # and int(baba.x) == int(block.x):
+#			yield(prepare_jump(sq), "completed")
+#			field.push(sq)
 
 func prepare_jump(sq):
 	var bab = grandma.position.x

@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="jamper"
-run/main_scene="res://menu.tscn"
+run/main_scene="res://level.tscn"
 config/icon="res://jamper.png"
 
 [autoload]

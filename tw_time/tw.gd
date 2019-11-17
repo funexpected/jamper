@@ -22,14 +22,14 @@ func ip(obj, prop, from, to, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EA
 	tw.start()
 	return tw.ip(obj, prop, from, to, duration, trans, easing, delay)
 	
-func ipby(obj, prop, by, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EASE_IN_OUT, delay=0):
-	var tw = Tw.new()
-	add_child(tw)
-	tw.start()
-	return tw.ipby(obj, prop, by, duration, trans, easing, delay)
-
-func ait(time):
-	return get_tree().create_timer(time)
+#func ipby(obj, prop, by, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EASE_IN_OUT, delay=0):
+#	var tw = Tw.new()
+#	add_child(tw)
+#	tw.start()
+#	return tw.ipby(obj, prop, by, duration, trans, easing, delay)
+#
+#func ait(time):
+#	return get_tree().create_timer(time)
 
 
 class Tw:
@@ -56,25 +56,25 @@ class Tw:
 		interpolate_property(obj, prop, from, to, duration, trans, easing, delay)
 		return self
 		
-	func ipby(obj, prop, by, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EASE_IN_OUT, delay=0):
-		last_duration = duration
-		interpolate_property(obj, prop, obj.get_indexed(prop), obj.get_indexed(prop) + by, duration, trans, easing, delay)
-		return self
-		
-	func ic(obj, cb, duration=null, arg0=ANY, arg1=ANY, arg2=ANY, arg3=ANY, arg4=ANY):
-		if duration == null:
-			duration = last_duration
-		if arg0 == ANY:
-			interpolate_callback(obj, duration, cb)
-		elif arg1 == ANY:
-			interpolate_callback(obj, duration, cb, arg0)
-		elif arg2 == ANY:
-			interpolate_callback(obj, duration, cb, arg0, arg1)
-		elif arg3 == ANY:
-			interpolate_callback(obj, duration, cb, arg0, arg1, arg2)
-		elif arg4 == ANY:
-			interpolate_callback(obj, duration, cb, arg0, arg1, arg2, arg3)
-		else:
-			interpolate_callback(obj, duration, cb, arg0, arg1, arg2, arg3, arg4)
-		return self
+#	func ipby(obj, prop, by, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EASE_IN_OUT, delay=0):
+#		last_duration = duration
+#		interpolate_property(obj, prop, obj.get_indexed(prop), obj.get_indexed(prop) + by, duration, trans, easing, delay)
+#		return self
+#
+#	func ic(obj, cb, duration=null, arg0=ANY, arg1=ANY, arg2=ANY, arg3=ANY, arg4=ANY):
+#		if duration == null:
+#			duration = last_duration
+#		if arg0 == ANY:
+#			interpolate_callback(obj, duration, cb)
+#		elif arg1 == ANY:
+#			interpolate_callback(obj, duration, cb, arg0)
+#		elif arg2 == ANY:
+#			interpolate_callback(obj, duration, cb, arg0, arg1)
+#		elif arg3 == ANY:
+#			interpolate_callback(obj, duration, cb, arg0, arg1, arg2)
+#		elif arg4 == ANY:
+#			interpolate_callback(obj, duration, cb, arg0, arg1, arg2, arg3)
+#		else:
+#			interpolate_callback(obj, duration, cb, arg0, arg1, arg2, arg3, arg4)
+#		return self
 

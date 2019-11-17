@@ -9,6 +9,7 @@ script = ExtResource( 1 )
 color = Color( 0.243137, 0.709804, 0.623529, 1 )
 
 [node name="label" type="Label" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

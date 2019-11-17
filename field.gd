@@ -35,13 +35,13 @@ func get_picture():
 	var img_path = png_path % nb
 	var img  = load(img_path)
 	png.texture = img
-	print("COLOR")
+#	print("COLOR")
 	image = png.texture.get_data()
 	image.lock()
 	var col = image.get_pixel(1, 1)
-	print(col)
+#	print(col)
 	var col_str = col.to_html(false)
-	print(col_str)
+#	print(col_str)
 
 
 func create_table():
@@ -56,11 +56,13 @@ func create_table():
 		table.append(raw)
 		i += 1
 
-func push(obj):
+func push(obj, force):
 	obj.active = false
-	print("print_stop")
+	yield(Time.wait(Time.TICK if force else Time.TICK*2), "completed")
+#	print("print_stop")
 	obj.tween.remove_all()
-	print(obj.tween)
+#	obj.position.x = 
+	obj.position.x = round((obj.position.x)/75)*75
 	obj.remove_from_group("square")
 	print_table()
 	var speed = obj.speed.y
