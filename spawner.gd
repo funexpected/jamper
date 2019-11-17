@@ -14,14 +14,14 @@ export var tick_offset = 0
 var COMPLETED = "completed"
 var emit_poligon
 
-
+var y_pos
 
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
+	y_pos = -(position.y + 75)/150
 	Time.connect("tick", self, "on_tick")
 	emit_poligon = $emit_polygon
 	pass
@@ -46,6 +46,7 @@ func set_queue_color(color_arr:PoolColorArray):
 
 func start_next_bullet(speed = default_speed):
 	var a:Node2D = SQUARE_TSCN.instance()
+	a.y_pos = y_pos
 	self.add_child(a)
 	if queue_color:
 		a.color = queue_color[next_bullet]
