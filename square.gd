@@ -5,6 +5,10 @@ const SIZE = Vector2(-150, -150)
 
 export var color = Color(1,1,1)
 
+export var active = true
+
+export var speed = Vector2(450, 450)
+
 var pos = Vector2(0,0) setget ,get_pos
 
 var direction:Vector2
@@ -17,6 +21,7 @@ func get_pos():
 		return Vector2((position.x / 75)/ 2.0, y_pos)
 	else:
 		return Vector2((12 + position.x / 75)/ 2.0, y_pos)
+
 
 func _ready():
 	Time.connect("tick", self, "update_pos_text")

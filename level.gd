@@ -4,7 +4,7 @@ onready var grandma = $grandma
 
 var is_need_to_jump = false
 const DEBUG = false
-const GRID = false
+const GRID = true
 const CELL = Vector2(150, 150)
 
 func _input(e):
@@ -19,10 +19,26 @@ func _ready():
 func on_tick(tick):
 	#if (tick%14 == 1):
 	#	$spawner0.start_next_bullet(1/Time.TICK/2)
+	if !tick % 14:
+		print(get_active_squares(), "\n\n\n")
+		
 	
 	if is_need_to_jump:
 		is_need_to_jump = false
-		grandma.jump(Time.TICK*4)
+		grandma.jump()
+		#grandma.jump_and_slide(GrandMa.RIGHT)
+
+
+func get_active_squares():
+	var spwnrs = get_tree().get_nodes_in_group("spawners")
+	var res = []
+	for i in spwnrs:
+		var bullets = i.get_active_bullets()
+		for j in bullets:
+			res.push_back(j)
+	return(res)
+
+
 
 
 func _draw():

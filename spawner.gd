@@ -43,11 +43,11 @@ func set_queue_color(color_arr:PoolColorArray):
 
 
 
-
 func start_next_bullet(speed = default_speed):
 	var a:Node2D = SQUARE_TSCN.instance()
 	a.y_pos = y_pos
 	self.add_child(a)
+	a.add_to_group("bullets")
 	if queue_color:
 		a.color = queue_color[next_bullet]
 	var tween_speed = (MESH_SIZE + 5) / speed
@@ -63,8 +63,17 @@ func start_next_bullet(speed = default_speed):
 		a.position.x -= SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
 		yield(tw.ip(a, "position:x", a.position.x, a.position.x + (MESH_SIZE + 5) * SEGMENT_SIZE, tween_speed),
 			"tween_completed")
-	a.queue_free()
+	if a.active:
+		a.queue_free()
 
+
+func get_active_bullets():
+	var tmp = get_tree().get_nodes_in_group("bullets")
+	var res = []
+	for i in tmp:
+		if i.active:
+			res.push_back(i)
+	return(res)
 
 func emit_color_bulet(speed, color):
 	emit_poligon.color = color
