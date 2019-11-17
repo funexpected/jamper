@@ -41,15 +41,15 @@ class Tw:
 	func _ready():
 		connect("tween_completed", self, "check")
 		
-#	func check(object, key):
-#		yield(Time, "idle")
-#		if is_queued_for_deletion():
-#			return
-#		if tell() >= get_runtime():
-#			emit_signal("completed")
-#			yield(Time, "idle")
-#			if tell() >= get_runtime():
-#				queue_free()
+	func check(object, key):
+		yield(Time, "idle")
+		if is_queued_for_deletion():
+			return
+		if tell() >= get_runtime():
+			emit_signal("completed")
+			yield(Time, "idle")
+			if tell() >= get_runtime():
+				queue_free()
 	
 	func ip(obj, prop, from, to, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EASE_IN_OUT, delay=0):
 		last_duration = duration
