@@ -23,29 +23,3 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 2 )
 expand = true
-
-[node name="jumper" type="TextureRect" parent="field/png"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="save" type="Control" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -525.0
-margin_right = 525.0
-margin_bottom = 1050.0
-rect_min_size = Vector2( 1050, 1050 )
-
-[node name="block" type="ColorRect" parent="."]
-visible = false
-margin_left = 14.0565
-margin_top = -2.34274
-margin_right = 164.056
-margin_bottom = 147.657
-rect_min_size = Vector2( 150, 150 )
-
-[node name="Button" type="Button" parent="."]
-margin_left = 120.261
-margin_top = 1102.65
-margin_right = 552.261
-margin_bottom = 1316.65

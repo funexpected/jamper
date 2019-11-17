@@ -4,7 +4,7 @@ var png_path = "res://jumpers/%s.png"
 var a = 0.3
 onready var png = $field/png
 onready var jumper = $field/png/jumper
-var table = []
+
 var pic_size = Vector2(7,7)
 onready var save = $save
 var size_block= 150
@@ -14,7 +14,7 @@ var image
 signal win
 signal success
 signal on_place
-
+var table = []
 
 
 onready var btn = $Button
@@ -22,11 +22,8 @@ onready var btn = $Button
 func _ready():
 	prepare_png()
 	create_table()
-#	btn.connect("pressed", self, "exper")
 	print(table)
 
-func exper():
-	pass
 
 func prepare_png():
 	get_picture()
@@ -35,6 +32,7 @@ func prepare_png():
 func get_picture():
 	randomize()
 	var nb = randi() % 2
+#	var nb = randi() % 1
 	var img_path = png_path % nb
 	var img  = load(img_path)
 	png.texture = img
@@ -60,45 +58,55 @@ func create_table():
 		i += 1
 
 func push(obj):
+	obj.active = false
+#	print_table()
 	var speed = obj.speed.y
-#	save.add_child(new_node)
 	var dic = block_is_good(obj)
-	if dic  == TYPE_DICTIONARY:
+
+	if typeof(dic)  == TYPE_DICTIONARY && dic["bool"] == true:
+		if is_full_jumper(table):
+			emit_signal("win")
+#		print("run good")
 		run_block(obj, dic)
 		return true
 	else:
+#		print("run bad")
+		run_bad_block(obj, dic)
 		return false
-		
+
+
+func print_table():
+	var i = int(0)
+	print("Table")
+	while i < 7:
+		print(table[i])
+		i += 1
 
 func block_is_good(obj):
 	var tmp_obj_pos_x = obj.position.x + 1080/2
-#	var column = obj.position.x / size_block
-	var column = tmp_obj_pos_x / size_block 
-	var cell = check_table(column)
-	if cell != Vector2(-1, -1):
-		return(__is_color_same(cell, obj))
-	return false
+	var column = int(tmp_obj_pos_x / size_block)
+	var cell = what_cell_is_empty_in_column(column)
+	return(__is_color_same(cell, obj))
 	
 func is_full_jumper(table):
 	var i = int(0)
-	while i < table.y.size():
+	while i < image.get_height():
 		var j = int(0)
-		while j < table.x.size():
-			if table[i][j] < 0:
+		while j < image.get_width():
+			if typeof(table[i][j]) != TYPE_COLOR:
 				return false
 			j += 1
 		i += 1
-	emit_signal("win")
 	return true
 	
-func check_table(column):
+func what_cell_is_empty_in_column(column):
 	var i = int(0)
 	var count = int(0)
 	while i < pic_size.y:
-		if table[column][i] == -1:
+		if typeof(table[i][column]) != TYPE_COLOR:
 			return Vector2(column, i)
 		i += 1
-	return Vector2(-1,-1)
+	return Vector2(column,i)
 	
 
 func __is_color_same(cell, obj):
@@ -109,28 +117,52 @@ func __is_color_same(cell, obj):
 		"y": null
 		}
 		}
-	var _color_original = image.get_pixel(cell.x, cell.y).to_html()
-	var _color_from_obj = obj.color.to_html()
-	if _color_from_obj == _color_original:
-		table[cell.x][cell.y] = Color(_color_from_obj)
-		dic["bool"] = true
-		dic["cell"]["x"] = cell.x
-		dic["cell"]["y"] = cell.y
+
+	if cell.y < 7:
+		var _color_original = image.get_pixel(cell.x, cell.y).to_html()
+		var _color_from_obj = obj.color.to_html()
+		if _color_from_obj == _color_original:
+			table[int(cell.y)][int(cell.x)] = Color(_color_from_obj)
+			dic["bool"] = true
+		else:
+			dic["bool"] = false
 	else:
 		dic["bool"] = false
+	dic["cell"]["x"] = int(cell.x)
+	dic["cell"]["y"] = int(cell.y)
 	return dic
 
 func run_block(obj, dic):
-	var s = get_distance(obj, dic)
-	
-	pass
-
-func get_distance(obj, dic):
 	yield(Time.defer(), "completed")
+#	print("in run")
 	var start_pos = obj.position
-	var end_pos = Vector2(start_pos.x, -1 * dic["cell"]["y"]*150 + 120)
+	var prom = -1800 + 150/2 +  dic["cell"]["y"]*150
+	var end_pos = Vector2(start_pos.x, prom)
 	var s = start_pos.y - end_pos.y
 	var t = s / obj.speed.y
-#	yield(tw.ip(new_node, "rect_position:y", start_pos.y, end_pos.y, t), "tween_completed")
-	yield(tw.ip(obj, "position:y", start_pos.y, end_pos.y, t), "tween_completed")
+	tw.ip(obj, "position:y", start_pos.y, end_pos.y, t)
+	yield(Time.wait(t), "completed")
 	emit_signal("on_place")
+
+func run_bad_block(obj, dic):
+	yield(Time.defer(), "completed")
+	var start_pos = obj.position
+	var prom = -1800 + 150/2 +  dic["cell"]["y"]*150
+	var end_pos = Vector2(start_pos.x, prom)
+	var s = start_pos.y - end_pos.y
+	var t = s / obj.speed.y
+	tw.ip(obj, "position:y", start_pos.y, end_pos.y, t)
+	yield(Time.wait(t), "completed")
+	destroy(obj)
+	
+
+func destroy(obj):
+	tw.ip(obj, "scale:y", 1, 0.7, 0.2)
+	yield(Time.wait(0.2), "completed")
+	tw.ip(obj, "scale:y", 0.7, 1, 0.2)
+	yield(Time.wait(0.2), "completed")
+	tw.ip(obj, "scale", Vector2(1,1), Vector2(1.5, 1.5), 0.2)
+	tw.ip(obj, "modulate:a", 1, 0.5, 0.2)
+	yield(Time.wait(0.2), "completed")
+	obj.get_parent().remove_child(obj)
+	

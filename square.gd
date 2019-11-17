@@ -4,7 +4,10 @@ extends Node2D
 const SIZE = Vector2(-150, -150)
 
 export var color = Color(1,1,1)
+
 export var active = true
+
+export var speed = Vector2(450, 450)
 
 var pos = Vector2(0,0) setget ,get_pos
 
@@ -12,6 +15,7 @@ var direction:Vector2
 
 func get_pos():
 	pass
+
 
 func _ready():
 	Time.connect("tick", self, "update_pos_text")
