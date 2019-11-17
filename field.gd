@@ -173,5 +173,4 @@ func destroy(obj):
 	tw.ip(obj, "scale", Vector2(1,1), Vector2(1.5, 1.5), 0.2)
 	tw.ip(obj, "modulate:a", 1, 0.5, 0.2)
 	yield(Time.wait(0.2), "completed")
-	obj.get_parent().remove_child(obj)
-	
+	obj.queue_free()

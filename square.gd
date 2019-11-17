@@ -19,19 +19,13 @@ var y_pos
 
 func get_pos():
 	if direction.x > 0:
-		return Vector2((position.x / 75)/ 2.0 - 3, y_pos)
+		pos =  Vector2((position.x / 75)/ 2.0 - 3, y_pos)
 	else:
-		return Vector2((12 + position.x / 75)/ 2.0 - 3, y_pos)
+		pos =  Vector2((12 + position.x / 75)/ 2.0 - 3, y_pos)
+	return pos
 
-
-func _ready():
-	Time.connect("tick", self, "update_pos_text")
-	update_pos_text()
-	
-	
-func update_pos_text(tick=0):
+func update_pos_text():
 	$label.text = "%0.1f, %0.1f" % [get_pos().x, get_pos().y]
-
 
 func _draw():
 	draw_rect(Rect2(-SIZE*0.5, SIZE), color, true)
