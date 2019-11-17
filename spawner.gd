@@ -2,15 +2,16 @@ extends Node2D
 
 var SQUARE_TSCN = preload("res://square.tscn")
 
-export var queue_color:PoolColorArray setget set_queue_color
+export var queue_color:PoolColorArray = [Color("FF0000"), Color("00FF00"), Color("0000ff")] setget set_queue_color
+export var tick_color:PoolIntArray = [10, 10, 10]
+export var next_bullet = 0
 export var MESH_SIZE = 7
 export var SEGMENT_SIZE = 150
-export var default_speed = 3.2
+export var default_speed = 3.33
 
-
+var LAST_TICK = 0
 
 var COMPLETED = "completed"
-var queue = 0
 var emit_poligon
 
 
@@ -20,17 +21,18 @@ var emit_poligon
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
+	Time.connect("tick", self, "on_tick")
 	emit_poligon = $emit_polygon
 	pass
 
+func on_tick(tick):
+	if tick - LAST_TICK == tick_color[next_bullet]:
+		start_next_bullet()
+		next_bullet = next_bullet + 1 if next_bullet < tick_color.size() - 1 else 0
+		LAST_TICK = tick
+		
 
-#var time = 0
-#var bps = 1.5
-#func _process(delta):
-#	time += delta
-#	if time >= bps:
-#		time = 0
-#		start_next_bullet(3.2)
 
 
 func set_queue_color(color_arr:PoolColorArray):
@@ -44,11 +46,8 @@ func start_next_bullet(speed = default_speed):
 	var a:Node2D = SQUARE_TSCN.instance()
 	self.add_child(a)
 	if queue_color:
-		a.color = queue_color[queue]
-		queue = queue + 1 if queue < queue_color.size() - 1 else 0
-	
+		a.color = queue_color[next_bullet]
 	var tween_speed = (MESH_SIZE + 4) / speed
-	
 	if position.x > 0:
 		emit_color_bulet(speed, a.color)
 		a.position.x += SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
