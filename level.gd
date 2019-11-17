@@ -19,10 +19,25 @@ func _ready():
 func on_tick(tick):
 	#if (tick%14 == 1):
 	#	$spawner0.start_next_bullet(1/Time.TICK/2)
+	if !tick % 14:
+		print(get_active_squares(), "\n\n\n")
+		
 	
 	if is_need_to_jump:
 		is_need_to_jump = false
 		grandma.jump(Time.TICK*4)
+
+
+func get_active_squares():
+	var spwnrs = get_tree().get_nodes_in_group("spawners")
+	var res = []
+	for i in spwnrs:
+		var bullets = i.get_active_bullets()
+		for j in bullets:
+			res.push_back(j)
+	return(res)
+
+
 
 
 func _draw():
