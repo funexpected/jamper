@@ -7,7 +7,7 @@ export var tick_color:PoolIntArray = PoolIntArray()
 export var next_bullet = 0
 export var MESH_SIZE = 7
 export var SEGMENT_SIZE = 150
-export var default_speed = 3.33
+export var default_speed = 3
 
 export var tick_offset = 0
 
@@ -49,16 +49,16 @@ func start_next_bullet(speed = default_speed):
 	self.add_child(a)
 	if queue_color:
 		a.color = queue_color[next_bullet]
-	var tween_speed = (MESH_SIZE + 4) / speed
+	var tween_speed = (MESH_SIZE + 5) / speed
 	if position.x > 0:
 		emit_color_bulet(speed, a.color)
 		a.position.x += SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
-		yield(tw.ip(a, "position:x", a.position.x, a.position.x - (MESH_SIZE + 4) * SEGMENT_SIZE, tween_speed),
+		yield(tw.ip(a, "position:x", a.position.x, a.position.x - (MESH_SIZE + 5) * SEGMENT_SIZE, tween_speed),
 			"tween_completed")
 	elif position.x < 0:
 		emit_color_bulet(speed, a.color)
 		a.position.x -= SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
-		yield(tw.ip(a, "position:x", a.position.x, a.position.x + (MESH_SIZE + 4) * SEGMENT_SIZE, tween_speed),
+		yield(tw.ip(a, "position:x", a.position.x, a.position.x + (MESH_SIZE + 5) * SEGMENT_SIZE, tween_speed),
 			"tween_completed")
 	a.queue_free()
 
