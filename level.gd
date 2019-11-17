@@ -19,18 +19,18 @@ func _ready():
 func on_tick(tick):
 	#if (tick%14 == 1):
 	#	$spawner0.start_next_bullet(1/Time.TICK/2)
-	if !tick % 14:
-		print(get_active_squares(), "\n\n\n")
+#	if !tick % 14:
+#		print(get_active_squares(), "\n\n\n")
 	
 	var player_pos = grandma.get_player_position()
-	if !is_need_to_jump and !grandma._pushing:
+	if !is_need_to_jump and !grandma._pushing and !grandma.jumping:
 		var _want_push
 		var to_many_to_push = false
 		for square in get_active_squares():
 			var s_pos = square.get_pos()
 			if abs(s_pos.y - player_pos.y) > 0.01:
 				 continue
-			if abs(s_pos.x - player_pos.x) < 1.51:
+			if abs(s_pos.x - player_pos.x) < 0.5:
 				if _want_push:
 					to_many_to_push = true
 					break
@@ -39,9 +39,9 @@ func on_tick(tick):
 			_want_push.color = Color()
 			print(_want_push.get_pos())
 			if _want_push.get_pos().x - player_pos.x > 0:
-				grandma.push(1)
+				grandma.push(-1)
 			else:
-				grandma.push(0)
+				grandma.push(1)
 				
 		
 	if is_need_to_jump:
