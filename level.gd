@@ -23,6 +23,8 @@ func on_tick(tick):
 		print(get_active_squares(), "\n\n\n")
 		
 	
+	
+	
 	if is_need_to_jump:
 		is_need_to_jump = false
 		grandma.jump()
@@ -30,13 +32,8 @@ func on_tick(tick):
 
 
 func get_active_squares():
-	var spwnrs = get_tree().get_nodes_in_group("spawners")
-	var res = []
-	for i in spwnrs:
-		var bullets = i.get_active_bullets()
-		for j in bullets:
-			res.push_back(j)
-	return(res)
+	var arr = get_tree().get_nodes_in_group("square")
+	return arr
 
 
 
