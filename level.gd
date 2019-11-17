@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var grandma = $grandma
+onready var field = $field
 
 var is_need_to_jump = false
 const DEBUG = false
@@ -47,7 +48,17 @@ func on_tick(tick):
 	if is_need_to_jump:
 		is_need_to_jump = false
 		grandma.jump()
+		push_block()
 		#grandma.jump_and_slide(GrandMa.RIGHT)
+
+func push_block():
+	walk_around_spawners()
+
+func walk_around_spawners():
+	var active = get_active_squares()
+	for sq in active:
+		if sq.position == grandma.position:
+			field.push(sq)
 
 
 func get_active_squares():
