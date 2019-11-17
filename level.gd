@@ -11,36 +11,19 @@ func _input(e):
 	if e is InputEventScreenTouch:
 		if e.pressed:
 			is_need_to_jump = true
+			
+func _ready():
+	Time.connect("tick", self, "on_tick")
+			
+			
+func on_tick(tick):
+	if (tick%14 == 1):
+		$spawner0.start_next_bullet(1/Time.TICK/2)
+	
+	if is_need_to_jump:
+		is_need_to_jump = false
+		grandma.jump(Time.TICK*4)
 
-const DT = 1/6.0 # Delta tick  !!! set 1.0 to slow test !!!
-var time = 0.0
-var tick = 0
-
-var tmp = 0
-func _process(delta):
-	time += delta
-	if tick*DT < time: # new tick! u can update something
-		tick += 1
-		if (tick%14 == 1):
-			$spawner0.start_next_bullet(1/DT/2)
-			tmp = tick
-		var bullet_pos_tick = (tick-tmp)*0.5 - 4
-		grandma.get_node("back/text").text = str(bullet_pos_tick)
-
-		if bullet_pos_tick < -1.0+2.0:
-			grandma.get_node("back").color = Color("4a57c3")
-		elif bullet_pos_tick < -0.5+2.0:
-			grandma.get_node("back").color = Color("1dd091")
-		elif bullet_pos_tick < 2.0+2.0:
-			grandma.get_node("back").color = Color("b323bb")
-		else:
-			grandma.get_node("back").color = Color("4a57c3")
-		print(tick*0.5)
-		if is_need_to_jump:
-			is_need_to_jump = false
-			grandma.jump(DT*2)
-	if DEBUG:
-		print("time:%.2f > TICK[%003d]" % [time, tick])
 
 func _draw():
 	if GRID:
