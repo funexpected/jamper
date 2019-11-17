@@ -11,6 +11,8 @@ export var speed = Vector2(450, 450)
 
 var pos = Vector2(0,0) setget ,get_pos
 
+var tween
+
 var direction:Vector2
 var y_pos
 

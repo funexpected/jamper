@@ -22,7 +22,6 @@ onready var btn = $Button
 func _ready():
 	prepare_png()
 	create_table()
-	print(table)
 
 
 func prepare_png():
@@ -59,6 +58,9 @@ func create_table():
 
 func push(obj):
 	obj.active = false
+	print("print_stop")
+	obj.tween.remove_all()
+	print(obj.tween)
 	obj.remove_from_group("square")
 #	print_table()
 	var speed = obj.speed.y
@@ -104,8 +106,9 @@ func what_cell_is_empty_in_column(column):
 	var i = int(0)
 	var count = int(0)
 	while i < pic_size.y:
-		if typeof(table[i][column]) != TYPE_COLOR:
-			return Vector2(column, i)
+		if(column < 7):
+			if typeof(table[i][column]) != TYPE_COLOR:
+				return Vector2(column, i)
 		i += 1
 	return Vector2(column,i)
 	

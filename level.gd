@@ -50,6 +50,7 @@ func on_tick(tick):
 	if is_need_to_jump:
 		is_need_to_jump = false
 		grandma.jump()
+		
 		push_block()
 		#grandma.jump_and_slide(GrandMa.RIGHT)
 
@@ -59,7 +60,10 @@ func push_block():
 func walk_around_spawners():
 	var active = get_active_squares()
 	for sq in active:
-		if sq.position.x == grandma.position.x && sq.position.y == grandma.position - 150:
+		var baba = grandma.get_player_position()
+		var block = sq.get_pos()
+		if int(baba.x) == int(block.x):
+#		sq.position.y == grandma.position - 150:
 			print("Touch")
 			field.push(sq)
 
