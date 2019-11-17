@@ -18,7 +18,6 @@ var y_pos
 
 
 func get_pos():
-	var zero_pos = get_tree().get_nodes_in_group("level")[0].position
 	if direction.x > 0:
 		return Vector2((position.x / 75)/ 2.0 - 3, y_pos)
 	else:

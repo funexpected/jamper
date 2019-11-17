@@ -63,10 +63,22 @@ func walk_around_spawners():
 		var baba = grandma.get_player_position()
 		var block = sq.get_pos()
 		if int(baba.x) == int(block.x):
+			yield(prepare_jump(sq), "completed")
 #		sq.position.y == grandma.position - 150:
 			print("Touch")
 			field.push(sq)
 
+func prepare_jump(sq):
+	var bab = grandma.position.x
+	var bl = sq.position.x + sq.get_parent().position.x
+	var s = abs(bab - bl)
+	var t = s / sq.speed.x
+	tw.ip(grandma, "scale", Vector2(1,1), Vector2(0.1, 0.1), t/2)
+	yield(Time.wait(t/2),"completed")
+	tw.ip(grandma, "scale", Vector2(0.1,0.1), Vector2(1, 1), t/2)
+	yield(Time.wait(t/2),"completed")
+	
+	
 
 func get_active_squares():
 	var arr = get_tree().get_nodes_in_group("square")

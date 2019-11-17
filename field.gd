@@ -62,7 +62,7 @@ func push(obj):
 	obj.tween.remove_all()
 	print(obj.tween)
 	obj.remove_from_group("square")
-#	print_table()
+	print_table()
 	var speed = obj.speed.y
 	var dic = block_is_good(obj)
 
@@ -86,7 +86,7 @@ func print_table():
 		i += 1
 
 func block_is_good(obj):
-	var tmp_obj_pos_x = obj.position.x + 1080/2
+	var tmp_obj_pos_x = obj.position.x + obj.get_parent().position.x + 1080/2
 	var column = int(tmp_obj_pos_x / size_block)
 	var cell = what_cell_is_empty_in_column(column)
 	return(__is_color_same(cell, obj))
@@ -140,7 +140,7 @@ func run_block(obj, dic):
 	yield(Time.defer(), "completed")
 #	print("in run")
 	var start_pos = obj.position
-	var prom = -1800 + 150/2 +  dic["cell"]["y"]*150
+	var prom = -1800 + 150/2 +  dic["cell"]["y"]*150 - obj.get_parent().position.y
 	var end_pos = Vector2(start_pos.x, prom)
 	var s = start_pos.y - end_pos.y
 	var t = s / obj.speed.y
@@ -151,11 +151,16 @@ func run_block(obj, dic):
 func run_bad_block(obj, dic):
 	yield(Time.defer(), "completed")
 	var start_pos = obj.position
-	var prom = -1800 + 150/2 +  dic["cell"]["y"]*150
+	var prom = -1800 + 150/2 +  dic["cell"]["y"]*150 - obj.get_parent().position.y
 	var end_pos = Vector2(start_pos.x, prom)
 	var s = start_pos.y - end_pos.y
-	var t = s / obj.speed.y
-	tw.ip(obj, "position:y", start_pos.y, end_pos.y, t)
+	var t = s / obj.speed.y	
+	
+	
+	
+	
+	
+	tw.ip(obj, "position:y", obj.position.y, end_pos.y, t)
 	yield(Time.wait(t), "completed")
 	destroy(obj)
 	
