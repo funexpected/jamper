@@ -52,11 +52,13 @@ func start_next_bullet(speed = default_speed):
 	var tween_speed = (MESH_SIZE + 5) / speed
 	if position.x > 0:
 		emit_color_bulet(speed, a.color)
+		a.direction = Vector2(-1, 0)
 		a.position.x += SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
 		yield(tw.ip(a, "position:x", a.position.x, a.position.x - (MESH_SIZE + 5) * SEGMENT_SIZE, tween_speed),
 			"tween_completed")
 	elif position.x < 0:
 		emit_color_bulet(speed, a.color)
+		a.direction = Vector2(1, 0)
 		a.position.x -= SEGMENT_SIZE * 0.5 + SEGMENT_SIZE * 3
 		yield(tw.ip(a, "position:x", a.position.x, a.position.x + (MESH_SIZE + 5) * SEGMENT_SIZE, tween_speed),
 			"tween_completed")

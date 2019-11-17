@@ -7,6 +7,8 @@ export var color = Color(1,1,1)
 
 var pos = Vector2(0,0) setget ,get_pos
 
+var direction:Vector2
+
 func get_pos():
 	pass
 
