@@ -16,7 +16,7 @@ enum {
 
 const ANY=Engine
 
-func ip(obj, prop, from, to, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EASE_IN_OUT, delay=0):
+func ip(obj, prop, from, to, duration, trans=Tween.TRANS_LINEAR, easing=Tween.EASE_IN_OUT, delay=0) -> Tw:
 	var tw = Tw.new()
 	add_child(tw)
 	tw.start()
