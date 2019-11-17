@@ -5,7 +5,6 @@
 [node name="spawner" type="Node2D"]
 position = Vector2( 1080, 1000 )
 script = ExtResource( 1 )
-queue_color = PoolColorArray( 0.901961, 0.152941, 0.152941, 1, 0.392157, 0.835294, 0.501961, 1 )
 
 [node name="emit_polygon" type="Polygon2D" parent="."]
 z_index = 1
