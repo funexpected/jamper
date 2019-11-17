@@ -18,9 +18,9 @@ var y_pos
 func get_pos():
 	var zero_pos = get_tree().get_nodes_in_group("level")[0].position
 	if direction.x > 0:
-		return Vector2((position.x / 75)/ 2.0, y_pos)
+		return Vector2((position.x / 75)/ 2.0 - 3, y_pos)
 	else:
-		return Vector2((12 + position.x / 75)/ 2.0, y_pos)
+		return Vector2((12 + position.x / 75)/ 2.0 - 3, y_pos)
 
 
 func _ready():
@@ -29,12 +29,8 @@ func _ready():
 	
 	
 func update_pos_text(tick=0):
-	if direction.x > 0:
-		$label.text = "%0.1f, %0.1f" % [(position.x / 75)/ 2.0, y_pos]
-	else:
-		$label.text = "%0.1f, %0.1f" % [(12 + position.x / 75)/ 2.0, y_pos]
-		
-	print ($label.text)
+	$label.text = "%0.1f, %0.1f" % [get_pos().x, get_pos().y]
+
 
 func _draw():
 	draw_rect(Rect2(-SIZE*0.5, SIZE), color, true)
