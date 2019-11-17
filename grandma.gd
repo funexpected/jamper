@@ -22,6 +22,10 @@ func set_texture(value):
 	texture = value
 	check()
 
+func get_player_position():
+	return Vector2(position.x / 75.0, position.y / 75.0)
+
+
 func check():
 	pass
 
@@ -61,14 +65,16 @@ func jump():
 	jumping = false
 
 
-
+var _pushing = false
 func push(dir):
+	_pushing = true
 	var t = Time.TICK * 2
 	yield(tw\
 		.ip(sprite, "scale", Vector2(1,1), Vector2(0.9, 1.1), t*0.3)\
 		.ip(sprite, "scale", sprite.scale, Vector2(1, 1), t*0.5, tw.SINE, tw.INOUT, t*0.3)\
 		.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
 	"completed")
+	_pushing = false
 
 
 
