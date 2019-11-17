@@ -75,7 +75,20 @@ func push(dir):
 		.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
 	"completed")
 	_pushing = false
+	self.position.x += 150 * dir
+	
 
+func push_and_drop(dir):
+	jumping = true
+	var t = Time.TICK * 2
+	if (t > 0):
+		yield(tw\
+		.ip(sprite, "scale", Vector2(1,1), Vector2(0.9, 1.1), t*0.3)\
+		.ip(sprite, "scale", sprite.scale, Vector2(1, 1), t*0.5, tw.SINE, tw.INOUT, t*0.3)\
+		.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
+	"completed")
+	jumping = false
+	pass
 
 
 func jump_and_slide(dir):
