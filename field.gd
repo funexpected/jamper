@@ -59,7 +59,7 @@ func create_table():
 
 func push(obj):
 	obj.active = false
-	obj.remove_from_group(obj.group)
+	obj.remove_from_group("square")
 #	print_table()
 	var speed = obj.speed.y
 	var dic = block_is_good(obj)
