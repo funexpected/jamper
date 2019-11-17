@@ -42,12 +42,17 @@ margin_bottom = -1800.0
 
 [node name="spawner0" parent="." instance=ExtResource( 4 )]
 position = Vector2( -525, -75 )
+queue_color = PoolColorArray( 0.901961, 0.152941, 0.152941, 1, 0.392157, 0.835294, 0.501961, 1, 0.392157, 0.835294, 0.501961, 1, 0.901961, 0.152941, 0.152941, 1 )
+tick_color = PoolIntArray( 14, 14, 14, 14 )
 
 [node name="spawner1" parent="." instance=ExtResource( 4 )]
 position = Vector2( -525, -225 )
 
 [node name="spawner2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 525, -225 )
+queue_color = PoolColorArray( 0.901961, 0.152941, 0.152941, 1, 0.901961, 0.152941, 0.152941, 1 )
+tick_color = PoolIntArray( 14, 14 )
+tick_offset = 2
 
 [node name="spawner3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 525, -75 )

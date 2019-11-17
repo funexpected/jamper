@@ -17,8 +17,8 @@ func _ready():
 			
 			
 func on_tick(tick):
-	if (tick%14 == 1):
-		$spawner0.start_next_bullet(1/Time.TICK/2)
+	#if (tick%14 == 1):
+	#	$spawner0.start_next_bullet(1/Time.TICK/2)
 	
 	if is_need_to_jump:
 		is_need_to_jump = false

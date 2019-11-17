@@ -2,14 +2,14 @@ extends Node2D
 
 var SQUARE_TSCN = preload("res://square.tscn")
 
-export var queue_color:PoolColorArray = [Color("FF0000"), Color("00FF00"), Color("0000ff")] setget set_queue_color
-export var tick_color:PoolIntArray = [10, 10, 10]
+export var queue_color:PoolColorArray = PoolColorArray() setget set_queue_color
+export var tick_color:PoolIntArray = PoolIntArray()
 export var next_bullet = 0
 export var MESH_SIZE = 7
 export var SEGMENT_SIZE = 150
 export var default_speed = 3.33
 
-var LAST_TICK = 0
+export var tick_offset = 0
 
 var COMPLETED = "completed"
 var emit_poligon
@@ -27,10 +27,12 @@ func _ready():
 	pass
 
 func on_tick(tick):
-	if tick - LAST_TICK == tick_color[next_bullet]:
+	if !queue_color.size():
+		return
+	if tick - tick_offset == tick_color[next_bullet]:
 		start_next_bullet()
 		next_bullet = next_bullet + 1 if next_bullet < tick_color.size() - 1 else 0
-		LAST_TICK = tick
+		tick_offset = tick
 		
 
 
