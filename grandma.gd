@@ -59,10 +59,19 @@ func jump():
 		.ip(sprite, "position:y", sprite.position.y - 150, sprite.position.y, t*0.3, tw.CUBIC, tw.IN, t*0.5),
 	"completed")
 	jumping = false
-	
+
+
+
 func push(dir):
-	pass
-	
+	var t = Time.TICK * 2
+	yield(tw\
+		.ip(sprite, "scale", Vector2(1,1), Vector2(0.9, 1.1), t*0.3)\
+		.ip(sprite, "scale", sprite.scale, Vector2(1, 1), t*0.5, tw.SINE, tw.INOUT, t*0.3)\
+		.ip(sprite, "position:x", sprite.position.x, sprite.position.x + 150 * dir, t*0.3, tw.CUBIC, tw.OUT, t*0.2),
+	"completed")
+
+
+
 func jump_and_slide(dir):
 	if jumping:
 		yield(Time.defer(), "completed")
@@ -77,6 +86,7 @@ func jump_and_slide(dir):
 	"completed")
 	jumping = false
 	moving = dir
+
 	
 func pause_in(ticks):
 	for i in range(ticks):
