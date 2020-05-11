@@ -16,7 +16,7 @@ signal success
 signal on_place
 var table = []
 
-
+onready var text = $"ts"
 onready var btn = $Button
 
 func _ready():
@@ -43,6 +43,26 @@ func get_picture():
 	var col_str = col.to_html(false)
 #	print(col_str)
 
+func get_existed_colors():
+	var color_types : PoolColorArray
+	var i = int(0)
+	for _y in range(0,8):
+		for _x in range(0,8):
+			i += 1
+			var col = image.get_pixel(_x,_y).to_html(false)
+			if !_is_color_in_array(color_types, col):
+#				where did i get this color? from (7:0)
+				if col == "000000":
+					continue
+				color_types.append(col)
+	return color_types
+			
+
+func _is_color_in_array(ar : PoolColorArray, color : Color) -> bool:
+	for cl in ar:
+		if cl == color:
+			return true
+	return false
 
 func create_table():
 	var plug = -1
@@ -67,9 +87,9 @@ func push(obj, force):
 	print_table()
 	var speed = obj.speed.y
 	var dic = block_is_good(obj)
-
 	if typeof(dic)  == TYPE_DICTIONARY && dic["bool"] == true:
 		if is_full_jumper(table):
+			print("win!")
 			emit_signal("win")
 #		print("run good")
 		run_block(obj, dic)
@@ -117,11 +137,11 @@ func what_cell_is_empty_in_column(column):
 
 func __is_color_same(cell, obj):
 	var dic = {
-		"bool" : null, 
-		"cell": 
-		{"x": null,
-		"y": null
-		}
+					"bool" : null, 
+					"cell": {
+								"x": null,
+								"y": null
+							}
 		}
 
 	if cell.y < 7:
@@ -131,11 +151,15 @@ func __is_color_same(cell, obj):
 			table[int(cell.y)][int(cell.x)] = Color(_color_from_obj)
 			dic["bool"] = true
 		else:
+#			print("Velid color")
+#			print(_color_original.is_valid_html_color())
+			$color_r.color = Color(_color_original)
 			dic["bool"] = false
 	else:
 		dic["bool"] = false
 	dic["cell"]["x"] = int(cell.x)
 	dic["cell"]["y"] = int(cell.y)
+	
 	return dic
 
 func run_block(obj, dic):
@@ -156,12 +180,7 @@ func run_bad_block(obj, dic):
 	var prom = -1800 + 150/2 +  dic["cell"]["y"]*150 - obj.get_parent().position.y
 	var end_pos = Vector2(start_pos.x, prom)
 	var s = start_pos.y - end_pos.y
-	var t = s / obj.speed.y	
-	
-	
-	
-	
-	
+	var t = s / obj.speed.y
 	tw.ip(obj, "position:y", obj.position.y, end_pos.y, t)
 	yield(Time.wait(t), "completed")
 	destroy(obj)

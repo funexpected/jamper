@@ -9,9 +9,10 @@ const FORMAT_SECONDS_NORMAL = 1
 const FORMAT_SECONDS_TINY = 2
 
 func _ready():
-	pause_mode = Node.PAUSE_MODE_PROCESS
-	get_tree().connect("idle_frame", self, "emit_signal", ["idle"])
-	get_tree().connect("physics_frame", self, "emit_signal", ["fixed"])
+	pass
+#	pause_mode = Node.PAUSE_MODE_PROCESS
+#	get_tree().connect("idle_frame", self, "emit_signal", ["idle"])
+#	get_tree().connect("physics_frame", self, "emit_signal", ["fixed"])
 	
 func wait(time):
 	yield(get_tree().create_timer(time), "timeout")
@@ -21,7 +22,9 @@ var time = 0.0
 var tick = 0
 
 var tmp = 0
+#func _process(delta):
 func _process(delta):
+#	print(delta)
 	if get_tree().paused:
 		return
 	time += delta

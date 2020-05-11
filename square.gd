@@ -18,6 +18,7 @@ var y_pos
 var start_tick = 0
 var start_pos = Vector2.ZERO
 
+onready var explosion = $explosion
 
 #func get_pos():
 #	if direction.x > 0:
@@ -25,6 +26,22 @@ var start_pos = Vector2.ZERO
 #	else:
 #		pos =  Vector2((12 + position.x / 75)/ 2.0 - 3, y_pos)
 #	return pos
+
+
+func _ready():
+	print("from part")
+	explosion.emitting = false
+	var col = explosion.process_material.color_ramp.gradient.colors
+	col.set(0, self.color)
+#	var col_1 = col.duplicate()
+#	col_1[0] = Color(self.color)
+#	explosion.process_material.color_ramp.gradient.set_colors(col_1)
+#	col[0] = Color(self.color)
+#	explosion.emitting = true
+#	print(self.color.to_html())
+#	print(col[0].to_html())
+#	for c in col:
+#		print(c.to_html())
 
 func get_pos_after_x_tick(x):
 	return start_pos + Vector2(direction.x * (Time.tick - start_tick + x)*0.5, 0)

@@ -38,8 +38,11 @@ var is_moving = false
 
 func move(value = moving):
 	moving = value
-	tw.ip(self, "position:x", position.x, (grid_pos.x+value/2.0)*CELL.x, Time.TICK)
-	grid_pos.x += value/2.0
+#	tw.ip(self, "position:x", position.x, (grid_pos.x+value/2.0)*CELL.x, Time.TICK)
+#	grid_pos.x += value/2.0
+	tw.ip(self, "position:x", position.x, (grid_pos.x+value/1.0)*CELL.x, Time.TICK)
+	grid_pos.x += value/1.0
+#	grid_pos.x += value/2.0
 
 func down():
 	jumping = true
@@ -62,6 +65,7 @@ func get_pos_after_x_tick(x):
 
 var jumping = false
 func jump():
+	
 	if jumping:
 		yield(Time.defer(), "completed")
 		return
@@ -71,13 +75,26 @@ func jump():
 	sprite.play(type)
 #	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
 	yield(sprite, "animation_finished")
+	
+	if grid_pos.y > 0:
+		moving = NONE
+#		position.y += 150
+#		grid_pos.y += 1
+		down()
+#		
 	type = "idle"
 	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
 	sprite.play(type)
 	moving = NONE
 	jumping = false
+	
 #	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
 
+func win_jump():
+	var limit = 3
+	for i in range(0, limit):
+		sprite.play("jump")
+		yield(sprite, "animation_finished")
 
 func jump_and_slide(dir, force):
 	if jumping:
@@ -95,8 +112,9 @@ func jump_and_slide(dir, force):
 		sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
 		sprite.play(type)
 #		print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
-		yield(sprite, "animation_finished")
+#		yield(sprite, "animation_finished")
 		moving = dir
+#		position.x += dir * 150
 		position.y -= 150
 	type = "idle"
 	sprite.speed_scale = 1 / Time.TICK / ANIM_TIME[type]
@@ -104,6 +122,7 @@ func jump_and_slide(dir, force):
 #	print("start '%s' at %s (scale: %s)" % [type, Time.tick, sprite.speed_scale])
 	yield(sprite, "animation_finished")
 	jumping = false
+	
 
 #
 #var _pushing = false

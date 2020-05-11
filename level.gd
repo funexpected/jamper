@@ -7,6 +7,23 @@ var is_need_to_jump = false
 const DEBUG = true
 const CELL = Vector2(150, 150)
 
+
+
+
+
+func _ready():
+	Time.connect("tick", self, "on_tick")
+	var colors = field.get_existed_colors()
+	field.connect("win", self, "win")
+	print("colors")
+	for cl in colors:
+		print(cl.to_html(false))
+	print("\n")
+	$spawner1.queue_color = colors
+	if DEBUG:
+		$debug_tick.show()
+
+
 func _input(e):
 	if e is InputEventScreenTouch:
 		if e.pressed:
@@ -19,10 +36,6 @@ func _input(e):
 		elif e.is_action_pressed("jump"):
 			is_need_to_jump = true
 
-func _ready():
-	Time.connect("tick", self, "on_tick")
-	if DEBUG:
-		$debug_tick.show()
 
 func on_tick(tick):
 	$debug_tick.text = "%003.2f sec\n(%0004d tick)" % [tick*Time.TICK, tick]
@@ -33,7 +46,7 @@ func on_tick(tick):
 				grandma.move()
 			elif p.y > 0:
 				grandma.down()
-	
+
 	var squares = get_active_squares()
 	for sq in squares:
 		sq.get_pos()
@@ -47,11 +60,12 @@ func on_tick(tick):
 			if jump_slide == null and sq.get_pos_after_x_tick(GrandMa.ANIM_TIME.jump_slide) == grandma.grid_pos:
 				jump_slide = {"dir": sq.direction, "force": false}
 		if jump_slide:
+#			pass
 			grandma.jump_and_slide(jump_slide.dir.x, jump_slide.force)
 		else:
 			grandma.jump()
 			push_block()
-
+#
 func push_block():
 	var baba_pos = grandma.grid_pos
 	var active = get_active_squares()
@@ -64,7 +78,7 @@ func push_block():
 			field.push(sq, true)
 		elif baba_pos.x == pos_2.x:
 			field.push(sq, false)
-		
+
 #		if int(baba.y) != int(block.y): # and int(baba.x) == int(block.x):
 #			yield(prepare_jump(sq), "completed")
 #			field.push(sq)
@@ -78,24 +92,38 @@ func prepare_jump(sq):
 	yield(Time.wait(t/2),"completed")
 	tw.ip(grandma, "scale", Vector2(0.1,0.1), Vector2(1, 1), t/2)
 	yield(Time.wait(t/2),"completed")
-	
-	
+
+
 
 func get_active_squares():
 	var arr = get_tree().get_nodes_in_group("square")
 	return arr
 
-
-
-
-func _draw():
-	if DEBUG:
-		draw_line(Vector2(0, 120), Vector2(0, -1800), Color("808080ff"), 1, true)
-		for k in 1920/75:
-			for i in 1080/150:
-				for j in 2:
-					var x = 75+i*75
-					x *= 1 if j else -1
-					draw_line(Vector2(x,120), Vector2(x, -1800), Color("808080ff") if i % 2 else Color("a0ff8080"), (1 if i % 2 else 3), true)
-			var y = -75*k
-			draw_line(Vector2(-620,y), Vector2(620, y), Color("808080ff") if k % 2 else Color("a0ff8080"), (1 if k % 2 else 3), true)
+func win():
+	$win_label.show()
+	grandma.win_jump()
+	$spawner0.queue_color = PoolColorArray()
+	$spawner1.queue_color = PoolColorArray()
+	$spawner3.queue_color = PoolColorArray()
+	var list_blocks = $spawner1.get_children()
+	while list_blocks.sieze() != 1:
+		var i = randi() % list_blocks.size()
+		var el = list_blocks[i]
+		if el is Node2D:
+			el.explosion.emitting = true
+		
+		
+	
+	
+	
+#func _draw():
+#	if DEBUG and OS.get_name() != "Android":
+#		draw_line(Vector2(0, 120), Vector2(0, -1800), Color("808080ff"), 1, true)
+#		for k in 1920/75:
+#			for i in 1080/150:
+#				for j in 2:
+#					var x = 75+i*75
+#					x *= 1 if j else -1
+#					draw_line(Vector2(x,120), Vector2(x, -1800), Color("808080ff") if i % 2 else Color("a0ff8080"), (1 if i % 2 else 3), true)
+#			var y = -75*k
+#			draw_line(Vector2(-620,y), Vector2(620, y), Color("808080ff") if k % 2 else Color("a0ff8080"), (1 if k % 2 else 3), true)

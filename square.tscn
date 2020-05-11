@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://square.gd" type="Script" id=1]
+[ext_resource path="res://explosion.tscn" type="PackedScene" id=2]
 
 [node name="square" type="Node2D" groups=[
 "square",
@@ -19,3 +20,8 @@ margin_top = -75.0
 rect_scale = Vector2( 2, 2 )
 align = 1
 valign = 1
+
+[node name="explosion" parent="." instance=ExtResource( 2 )]
+emitting = true
+
+[editable path="explosion"]

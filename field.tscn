@@ -23,3 +23,22 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 2 )
 expand = true
+
+[node name="ts" type="TextEdit" parent="."]
+visible = false
+margin_left = -447.464
+margin_top = 768.447
+margin_right = 632.536
+margin_bottom = 1344.45
+rect_min_size = Vector2( 1080, 576 )
+mouse_filter = 2
+size_flags_horizontal = 3
+readonly = true
+
+[node name="color_r" type="ColorRect" parent="."]
+visible = false
+margin_left = 479.0
+margin_top = 1241.0
+margin_right = 586.0
+margin_bottom = 1316.0
+color = Color( 0, 1, 0, 1 )
